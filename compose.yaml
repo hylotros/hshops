@@ -1,0 +1,10 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hshops:1.0
+    container_name: hshops-api
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
