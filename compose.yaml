@@ -8,6 +8,12 @@ services:
     ports:
       - "8000:8000"
     restart: unless-stopped
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
   postgres:
     image: postgres:17
     environment:
