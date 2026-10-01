@@ -31,6 +31,9 @@ jobs:
       - name: Check API health
         run: curl --fail http://127.0.0.1/health
 
+      - name: Check database integration
+        run: curl --fail http://127.0.0.1/users
+
       - name: Show service status
         if: always()
         run: docker compose ps

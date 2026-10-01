@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(100) NOT NULL
+);
+
+INSERT INTO users (username)
+SELECT 'DEVOPS'
+WHERE NOT EXISTS (
+    SELECT 1 FROM users WHERE username = 'DEVOPS'
+);
