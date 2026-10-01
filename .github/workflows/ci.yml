@@ -25,9 +25,6 @@ jobs:
       - name: Build and start services
         run: docker compose up -d --build
 
-      - name: Wait for services
-        run: sleep 15
-
       - name: Check API health
         run: curl --fail http://127.0.0.1/health
 
