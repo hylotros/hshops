@@ -45,3 +45,25 @@ jobs:
       - name: Show logs
         if: failure()
         run: docker compose logs
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Deploy to VPS
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/hshops_deploy
+          chmod 600 ~/.ssh/hshops_deploy
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
+          ssh -i ~/.ssh/hshops_deploy "$SSH_USER@$SSH_HOST" '
+            cd ~/projects/hshops &&
+            git pull --ff-only &&
+            docker compose up -d --build
+          '
